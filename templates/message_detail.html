@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+			  <div class="x_panel">
+                <div class="x_title">
+                  <h2>{{message.bulletin.name}} <small>{{ message.bulletin.description }}</small></h2>
+            
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <div class="dashboard-widget-content">
+
+                    <ul class="to_do">
+                      
+                      <li>
+                        <div class="block">
+                          <div class="block_content">
+                            <h2 class="title">
+                                              <a>{{message.title}}</a>
+                                          </h2>
+                            <div class="byline">
+                              <span>{{message.release_time}}</span> by <a>{{message.publisher}}</a>
+                            </div>
+                            <p class="excerpt">{{message.message_content}}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      
+                    </ul>
+
+                  </div>
+                </div>
+              </div>
+			  
+{% endblock content %}

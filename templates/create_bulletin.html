@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<body>
+    <div>
+        <section class="login_content">
+            <form action="{% url 'create_bulletin' %}" id="bulletin_form" method="post">
+                      {% csrf_token %}
+                      <h1>CREATE BULLETIN</h1>
+                      <div>
+                        <input name="name" type="text" class="form-control" placeholder="Bulletin Name" required="" />
+                      </div>
+                      <div>
+                        <input name="description" type="text" class="form-control" placeholder="Description" required="" />
+                      </div>
+                      <div>
+                        <a class="btn btn-default submit" href="javascript:document:bulletin_form.submit();">Submit</a>
+                      </div>
+
+                      <div class="clearfix"></div>
+
+                      <div class="separator">
+
+                        <div class="clearfix"></div>
+                        <br />
+
+                        <div>
+                          <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                          <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                        </div>
+                      </div>
+                    </form>
+        </section>
+    </div>
+</body>
+{% endblock content %}
