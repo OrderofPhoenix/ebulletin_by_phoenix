@@ -72,7 +72,7 @@ def register(request):
 def userindex(request):
     if not request.user.is_authenticated():  
         return redirect('userlogin')
-    login_user=request.user.pk
+    login_user=request.user
     created_bulletins=Bulletin.objects.filter(creator=login_user)
     followed_bulletins=Bulletin.objects.filter(follower=login_user)    
     
@@ -86,12 +86,15 @@ def userindex(request):
 def message_list(request, bulletin_id):
     if not request.user.is_authenticated():  
         return redirect('userlogin')
-    login_user = request.user.pk
+    login_user = request.user
     created_bulletins=Bulletin.objects.filter(creator=login_user)
     followed_bulletins=Bulletin.objects.filter(follower=login_user)
-    
+    flag = 0
     bulletin=Bulletin.objects.get(pk=bulletin_id)
     messages=Message.objects.filter(bulletin=bulletin)
+    for fo in bulletin.follower.all():
+        if fo == login_user:
+            flag = 1
     message_comments=[]
     for message in messages:
         comments=Comment.objects.filter(message=message)
@@ -99,12 +102,12 @@ def message_list(request, bulletin_id):
     message_comments=dict(message_comments)
 
     return render(request,'message_list.html',{'created_bulletins':created_bulletins,'followed_bulletins':followed_bulletins,
-                    'login_user':login_user,'messages':messages,'bulletin':bulletin,'message_comments':message_comments})
+                    'login_user':login_user,'messages':messages,'bulletin':bulletin,'message_comments':message_comments, 'flag': flag})
 
 def message_detail(request, message_id):
     if not request.user.is_authenticated():  
         return redirect('userlogin')
-    login_user = request.user.pk
+    login_user = request.user
     created_bulletins=Bulletin.objects.filter(creator=login_user)
     followed_bulletins=Bulletin.objects.filter(follower=login_user)
 
@@ -123,7 +126,34 @@ def create_bulletin(request):
         bulletin.save()
         return redirect('userindex')
     else:
-        return render(request, 'create_bulletin.html')
+        login_user = request.user
+        created_bulletins = Bulletin.objects.filter(creator=login_user)
+        followed_bulletins = Bulletin.objects.filter(follower=login_user)
+        return render(request, 'create_bulletin.html', {'created_bulletins': created_bulletins, 'followed_bulletins': followed_bulletins})
+
+def search_bulletin(request):
+    if request.method == 'POST':
+        keyword = request.POST.get("keyword", "")
+        bulletin_search_result = Bulletin.objects.filter(name__contains=keyword)
+        return render(request, "result.html", {'result': bulletin_search_result})
+
+
+def del_bulletin(request, bulletin_id):
+    Bulletin.objects.get(pk=bulletin_id).delete()
+    return redirect('userindex')
 
 def follow_bulletin(request, bulletin_id):
-    pass
+    bulletin = Bulletin.objects.get(pk=bulletin_id)
+    bulletin.follower.add(request.user)
+    bulletin.save()
+    return redirect('userindex')
+
+def post_message(request, bulletin_id):
+    if request.method == 'POST':
+        title = request.POST.get("title", "")
+        content = request.POST.get("content", "")
+        bulletin = Bulletin.objects.get(pk=bulletin_id)
+        publisher = request.user
+        message = Message.objects.create(title=title, bulletin=bulletin, message_content=content, publisher=publisher)
+        message.save()
+        return redirect('userindex')

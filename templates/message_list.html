@@ -3,7 +3,7 @@
                     
 			  <div class="x_panel">
                 <div class="x_title">
-                  <h2>{{bulletin.name}} <small>{{ message.bulletin.description }}</small></h2>
+                  <h2>{{bulletin.name}} <small>{{ bulletin.description }}</small></h2>
                   {% if login_user == bulletin.creator %}
                   <ul class="nav navbar-right panel_toolbox">
                     <li class="">
@@ -11,8 +11,30 @@
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;发布
                             </a></strong>
                     </li>
+                      <li class="">
+                            <strong><a href="{% url 'del_bulletin' bulletin_id=bulletin.pk %}" >
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;删除
+                            </a></strong>
+                    </li>
                   </ul>
-                  {% endif %}
+                     {% endif %}
+                    {% if flag == 1 %}
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li class="">
+                                <strong>
+                                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>已关注
+                                </strong>
+                        </li>
+                    </ul>
+                    {% else %}
+                     <ul class="nav navbar-right panel_toolbox">
+                        <li class="">
+                                <strong><a href="{% url 'follow_bulletin' bulletin_id=bulletin.pk %}" >
+                                    <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>关注
+                                </a></strong>
+                        </li>
+                    </ul>
+                    {% endif %}
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -21,32 +43,32 @@
                     <!-- 发布消息 -->         
                         <div class="block collapse" id="release" >
                           <div class="block_content">
-                            <form class="form-horizontal form-label-left input_mask">
+                            <form class="form-horizontal form-label-left input_mask" action="{% url 'post_message' bulletin_id=bulletin.pk %}" method="post">
+                                {% csrf_token %}
+                              <div class="form-group">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">标题</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                  <input name="title" type="text" class="form-control" placeholder="Default Input">
+                                </div>
+                              </div>
 
-                      <div class="form-group">
-                        <label class="control-label col-md-2 col-sm-2 col-xs-12">标题</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Default Input">
-                        </div>
-                      </div>
-                      
-                      <div class="form-group">
-                        <label class="control-label col-md-2 col-sm-2 col-xs-12">内容</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <textarea class="resizable_textarea form-control" placeholder="This text area automatically resizes its height as you fill in more text courtesy of autosize-master it out..."></textarea>
-                        </div>
-                      </div>
-            
-                      <div class="form-group">
-                        <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
-                        <div class="col-md-6 col-sm-6 col-xs-12 ">
-                          <button type="submit" class="btn btn-success">提交</button>
-						              <button class="btn btn-primary" type="reset">重置</button>
-                          <button type="button" class="btn btn-primary">取消</button>
-                        </div>
-                      </div>
+                              <div class="form-group">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">内容</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                  <textarea name="content" class="resizable_textarea form-control" placeholder="This text area automatically resizes its height as you fill in more text courtesy of autosize-master it out..."></textarea>
+                                </div>
+                              </div>
 
-                    </form>
+                              <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                  <button type="submit" class="btn btn-success">提交</button>
+                                              <button class="btn btn-primary" type="reset">重置</button>
+                                  <button type="button" class="btn btn-primary"><a href="#" data-toggle="collapse" data-target="#release">取消</a></button>
+                                </div>
+                              </div>
+
+                            </form>
                           </div>
                         </div>
                     <!-- /发布消息 -->         
@@ -58,7 +80,7 @@
                         <div class="block">
                           <div class="block_content">
                             <h2 class="title">
-                                              <a href="{% url 'message_detail' login_user_id=login_user.id message_id=message.id %}">{{message.title}}</a>
+                                              <a href="{% url 'message_detail' message_id=message.id %}">{{message.title}}</a>
                                           </h2>
                             <div class="byline">
                               <span>{{message.release_time}}</span> by <a>{{message.publisher}}</a>
@@ -74,7 +96,7 @@
               <div class="block">
                 <div class="block_content">   
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="###" data-toggle="collapse" data-target="#{{message.id}}">
+                    <a href="#" data-toggle="collapse" data-target="#{{message.id}}">
                       <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                     </a>
                   
