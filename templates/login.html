@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gentelella Alela! | </title>
+    <title>凤凰电子公告板</title>
 
     <!-- Bootstrap -->
     <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -27,6 +27,11 @@
     <div>
       <a class="hiddenanchor" id="signup"></a>
       <a class="hiddenanchor" id="signin"></a>
+      <a class="hiddenanchor" id="findpassword"></a>
+      <div>
+        <br><br><br><br>
+        <center><h1><i class="fa fa-paw"></i> Phoenix e-Bulletin</h1></center>
+      </div>
 
       <div class="login_wrapper">
         <!-- login -->
@@ -34,7 +39,7 @@
           <section class="login_content">
             <form action="{% url 'userlogin' %}" id="login_form" method="post">
               {% csrf_token %}
-              <h1>SIGN IN</h1>
+              <h1>SIGN IN</h1><br>
               <div>
                 <input name="username" type="text" class="form-control" placeholder="Username" required="" />
               </div>
@@ -43,7 +48,7 @@
               </div>
               <div>
                 <a class="btn btn-default submit" href="javascript:document:login_form.submit();" >Log in</a>
-                <a class="reset_pass" href="#">Lost your password?</a>
+
               </div>
 
               <div class="clearfix"></div>
@@ -51,14 +56,15 @@
               <div class="separator">
                 <p class="change_link">New to site?
                   <a href="#signup" class="to_register"> Create Account </a>
+                  <br><a href="#findpassword">Lost your password?</a>
                 </p>
+
 
                 <div class="clearfix"></div>
                 <br />
 
                 <div>
-                  <h1><i class="fa fa-paw"></i> Phoenix e-Bulletin</h1>
-                  <p>©2017 All Rights Reserved.</p>
+                  <center>©2017 All Rights Reserved.</center>
                 </div>
               </div>
             </form>
@@ -70,7 +76,7 @@
           <section class="login_content">
             <form action="{% url 'register' %}" id="user_form" method="post">
               {% csrf_token %}
-              <h1>SIGN UP</h1>
+              <h1>SIGN UP</h1><br>
               <div>
                 <input name="username" type="text" class="form-control" placeholder="Username" required="" />
               </div>
@@ -98,8 +104,8 @@
                 <br />
 
                 <div>
-                  <h1><i class="fa fa-paw"></i> Phoenix e-Bulletin</h1>
-                  <p>©2017 All Rights Reserved.</p>
+
+                  <center>©2017 All Rights Reserved.</center>
                 </div>
               </div>
             </form>
